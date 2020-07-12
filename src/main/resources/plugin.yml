@@ -1,0 +1,11 @@
+name: BottomlessMultiverse
+version: 1.0
+author: GeekLegend
+main: fr.geeklegend.Main
+api-version: 1.13
+commands:
+  savekit:
+  saveitems:
+  enchant:
+    aliases:
+      - enchants
