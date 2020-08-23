@@ -3,7 +3,6 @@ package fr.geeklegend.team;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -22,21 +21,17 @@ public class Team
     private Material icon;
 
     @Getter
-    private Location spawn;
-
-    @Getter
     private List<String> players;
 
     @Getter
     @Setter
     private int maxInTeam;
 
-    public Team(String name, ChatColor nameColor, Material icon, Location spawn)
+    public Team(String name, ChatColor nameColor, Material icon)
     {
         this.name = name;
         this.nameColor = nameColor;
         this.icon = icon;
-        this.spawn = spawn;
         this.players = new ArrayList<>();
     }
 

@@ -28,56 +28,64 @@ public class StartScheduler extends BukkitRunnable implements IScheduler
 
     @Getter
     // private static int timer = defaultConfig.getInt("schedulers.start.timer");
-    private static int timer = 5 + 1;
+    @Setter
+    private static int timer = 10 + 1;
 
     @Getter
     @Setter
     private static boolean isRunning = false;
 
+    @Getter
+    @Setter
+    private static boolean isPaused;
+
     @Override
     public void run()
     {
-        if (gameManager.getPlayers().size() < defaultConfig.getInt("schedulers.start.minplayers"))
+        if (!isPaused)
         {
-            stop();
-
-            gameManager.setGameState(GameState.WAITING);
-            gameManager.getPlayers().stream().filter(player -> player != null).forEach(player -> player.sendMessage(defaultConfig.getString("messages.starting.cancelled").replace("%prefix%", Constant.PREFIX).replace("%online%", String.valueOf(defaultConfig.getInt("schedulers.start.minplayers"))).replace("&", "§")));
-        } else
-        {
-            timer--;
-
-            gameManager.getPlayers().stream().filter(player -> player != null).forEach(player -> player.setLevel(timer));
-
-            if (timer == 10 || timer == 5 || timer == 4 || timer == 3 || timer == 2 || timer == 1)
+            if (gameManager.getPlayers().size() < defaultConfig.getInt("schedulers.start.minplayers"))
             {
-                gameManager.getPlayers().stream().filter(player -> player != null).forEach(player ->
-                {
-                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-                    player.sendTitle(defaultConfig.getString("messages.starting.title.firstline").replace("&", "§"), defaultConfig.getString("messages.starting.title.secondline").replace("%timer%", String.valueOf(timer)).replace("&", "§"), 1, 20, 1);
-                    player.sendMessage(defaultConfig.getString("messages.starting.chat").replace("%prefix%", Constant.PREFIX).replace("%timer%", String.valueOf(timer)).replace("&", "§"));
-                });
-            } else if (timer == 0)
-            {
-                WorldManager worldManager = gameManager.getWorldManager();
-                TeamManager teamManager = gameManager.getTeamManager();
-
                 stop();
 
-                worldManager.setBorder(GameStage.STAGE_1);
+                gameManager.setGameState(GameState.WAITING);
+                gameManager.getPlayers().stream().filter(player -> player != null).forEach(player -> player.sendMessage(defaultConfig.getString("messages.starting.cancelled").replace("%prefix%", Constant.PREFIX).replace("%online%", String.valueOf(defaultConfig.getInt("schedulers.start.minplayers"))).replace("&", "§")));
+            } else
+            {
+                timer--;
 
-                gameManager.setGameState(GameState.PRE_GAME);
-                gameManager.setGameStage(GameStage.STAGE_1);
-                gameManager.getPlayers().stream().filter(player -> player != null).forEach(player ->
+                gameManager.getPlayers().stream().filter(player -> player != null).forEach(player -> player.setLevel(timer));
+
+                if (timer == 10 || timer == 5 || timer == 4 || timer == 3 || timer == 2 || timer == 1)
                 {
-                    teamManager.random(player);
+                    gameManager.getPlayers().stream().filter(player -> player != null).forEach(player ->
+                    {
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                        player.sendTitle(defaultConfig.getString("messages.starting.title.firstline").replace("&", "§"), defaultConfig.getString("messages.starting.title.secondline").replace("%timer%", String.valueOf(timer)).replace("&", "§"), 1, 20, 1);
+                        player.sendMessage(defaultConfig.getString("messages.starting.chat").replace("%prefix%", Constant.PREFIX).replace("%timer%", String.valueOf(timer)).replace("&", "§"));
+                    });
+                } else if (timer == 0)
+                {
+                    WorldManager worldManager = gameManager.getWorldManager();
+                    TeamManager teamManager = gameManager.getTeamManager();
 
-                    gameManager.setup(player, GameState.PRE_GAME);
-                });
+                    stop();
 
-                new ChestManager();
-                new CageScheduler().runTaskTimer(Main.getPlugin(), 20, 20);
-                new ActionBarScheduler().runTaskTimer(Main.getPlugin(), 20, 20);
+                    worldManager.setBorder(GameStage.STAGE_1);
+
+                    gameManager.setGameState(GameState.PRE_GAME);
+                    gameManager.setGameStage(GameStage.STAGE_1);
+                    gameManager.getPlayers().stream().filter(player -> player != null).forEach(player ->
+                    {
+                        teamManager.random(player);
+
+                        gameManager.setup(player, GameState.PRE_GAME);
+                    });
+
+                    new ChestManager();
+                    new CageScheduler().runTaskTimer(Main.getPlugin(), 20, 20);
+                    new ActionBarScheduler().runTaskTimer(Main.getPlugin(), 20, 20);
+                }
             }
         }
     }

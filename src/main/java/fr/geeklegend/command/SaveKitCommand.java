@@ -4,6 +4,7 @@ import fr.geeklegend.Main;
 import fr.geeklegend.kit.Kit;
 import fr.geeklegend.kit.KitEditState;
 import fr.geeklegend.kit.KitManager;
+import fr.geeklegend.scheduler.StartScheduler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,6 +28,8 @@ public class SaveKitCommand implements CommandExecutor
                     if (kitManager.getEditKit().containsKey(player))
                     {
                         Kit kit = kitManager.getEditKit().get(player);
+
+                        StartScheduler.setPaused(false);
 
                         if (kit != null)
                         {

@@ -64,7 +64,7 @@ public class ConfigManager
         defaultConfig.addDefault("messages.deathmatch.title.secondline", "&eTéléportation dans %timer%s.");
         defaultConfig.addDefault("messages.deathmatch.chat", "%prefix% &eLe match à mort commence dans &6%timer% seconde(s).");
         defaultConfig.addDefault("messages.spectator", "%prefix% &eLa partie à déja commencer, vous êtes donc en spectateur.");
-
+        defaultConfig.addDefault("messages.victory", "&7§m---------------&r &eBM &7&m--------------- \n \n&fTué(s): &a%kills%\n \n&7&m----------------------------------------");
         defaultConfig.addDefault("join.spawn", "1.5,107.0,-3.5,180,0");
         defaultConfig.addDefault("join.gamemode", "adventure");
         defaultConfig.addDefault("join.void", 70);
@@ -123,6 +123,7 @@ public class ConfigManager
         defaultConfig.addDefault("schedulers.cage.timer", 5);
         defaultConfig.addDefault("schedulers.border.timer", 30);
         defaultConfig.addDefault("schedulers.teleport.timer", 45);
+        defaultConfig.addDefault("schedulers.win.timer", 10);
         defaultConfig.addDefault("game.world.stage1.border.center", "1.5,107.0,-3.5,0,0");
         defaultConfig.addDefault("game.world.stage1.border.size", 150);
         defaultConfig.addDefault("game.world.stage1.border.maxsize", 50);

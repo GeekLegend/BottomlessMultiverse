@@ -4,10 +4,12 @@ import fr.geeklegend.Main;
 import fr.geeklegend.config.ConfigManager;
 import fr.geeklegend.game.GameManager;
 import fr.geeklegend.game.GameStage;
+import fr.geeklegend.team.Team;
 import fr.geeklegend.team.TeamManager;
 import fr.geeklegend.team.TeamType;
 import fr.geeklegend.world.WorldManager;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -78,9 +80,25 @@ public class CageManager
 
             if (c != null)
             {
+                TeamManager teamManager = gameManager.getTeamManager();
+                TeamType teamType = teamManager.getTeamType();
                 Location cSpawn = c.getSpawn();
 
                 player.teleport(new Location(cSpawn.getWorld(), cSpawn.getX(), cSpawn.getY() + 1, cSpawn.getZ(), cSpawn.getYaw(), cSpawn.getPitch()));
+
+                if (!teamType.equals(TeamType.SOLO))
+                {
+                    Team team = teamManager.getTeam().get(player);
+
+                    team.getPlayers().forEach(players -> {
+                        Player playersTeam = Bukkit.getPlayer(players);
+
+                        if (playersTeam != null)
+                        {
+                            playersTeam.teleport(player.getLocation());
+                        }
+                    });
+                }
             }
         });
     }

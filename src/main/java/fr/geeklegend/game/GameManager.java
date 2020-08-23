@@ -9,6 +9,7 @@ import fr.geeklegend.game.spectator.SpectatorManager;
 import fr.geeklegend.kit.KitManager;
 import fr.geeklegend.player.PlayerData;
 import fr.geeklegend.player.PlayerDataManager;
+import fr.geeklegend.scheduler.WinScheduler;
 import fr.geeklegend.team.Team;
 import fr.geeklegend.team.TeamManager;
 import fr.geeklegend.team.TeamType;
@@ -19,6 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -144,6 +146,54 @@ public class GameManager
         {
             cageManager.remove(cage);
         }
+    }
+
+    public void checkWin()
+    {
+        if (gameStage.equals(GameStage.DEATH_MATCH))
+        {
+            if (teamManager.getTeamType().equals(TeamType.SOLO))
+            {
+                if (players.size() == 1)
+                {
+                    setupVictory();
+                }
+            } else
+            {
+                if (teamManager.getTeams().size() == 1)
+                {
+                    setupVictory();
+                }
+            }
+        } else
+        {
+            if (players.size() == 1)
+            {
+                setupVictory();
+            }
+        }
+    }
+
+    private void setupVictory()
+    {
+        gameState = GameState.FINISH;
+
+        players.forEach(player ->
+        {
+            PlayerData playerData = playerDataManager.getPlayerData().get(player);
+
+            if (playerData != null)
+            {
+                ConfigManager configManager = Main.getPlugin().getConfigManager();
+                FileConfiguration defaultConfig = configManager.getDefaultConfig();
+
+                player.sendMessage(defaultConfig.getString("messages.victory").replace("%kills%", String.valueOf(playerData.getKills())).replace("&", "§"));
+            }
+        });
+
+        Bukkit.getScheduler().cancelTasks(Main.getPlugin());
+
+        new WinScheduler().runTaskTimer(Main.getPlugin(), 20, 20);
     }
 
     public Player getRandomPlayer()

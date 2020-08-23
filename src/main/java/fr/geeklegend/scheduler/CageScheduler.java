@@ -42,6 +42,8 @@ public class CageScheduler extends BukkitRunnable implements IScheduler
         {
             CageManager cageManager = gameManager.getCageManager();
 
+            stop();
+
             gameManager.setGameState(GameState.GAME);
             gameManager.getPlayers().stream().filter(player -> player != null).forEach(player ->
                     cageManager.getCages().stream().filter(cage -> cage != null).forEach(cage ->
@@ -52,8 +54,6 @@ public class CageScheduler extends BukkitRunnable implements IScheduler
                     }));
 
             new BorderScheduler().runTaskTimer(Main.getPlugin(), 20, 20);
-
-            stop();
         }
     }
 

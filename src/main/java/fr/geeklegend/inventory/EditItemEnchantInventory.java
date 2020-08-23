@@ -4,6 +4,7 @@ import fr.geeklegend.Main;
 import fr.geeklegend.config.ConfigManager;
 import fr.geeklegend.game.GameManager;
 import fr.geeklegend.game.GameState;
+import fr.geeklegend.scheduler.StartScheduler;
 import fr.geeklegend.util.ItemBuilder;
 import fr.geeklegend.util.interfaces.IInventory;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -149,6 +151,18 @@ public class EditItemEnchantInventory implements IInventory, Listener
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event)
+    {
+        Inventory inventory = event.getInventory();
+        InventoryView inventoryView = event.getView();
+
+        if (inventory != null && inventoryView.getTitle().equalsIgnoreCase(name))
+        {
+            StartScheduler.setPaused(false);
         }
     }
 

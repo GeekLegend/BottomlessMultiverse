@@ -4,6 +4,7 @@ import fr.geeklegend.Main;
 import fr.geeklegend.config.ConfigManager;
 import fr.geeklegend.game.GameManager;
 import fr.geeklegend.game.GameState;
+import fr.geeklegend.game.spectator.SpectatorManager;
 import fr.geeklegend.player.PlayerData;
 import fr.geeklegend.player.PlayerDataManager;
 import fr.geeklegend.team.TeamManager;
@@ -29,17 +30,14 @@ public class PlayerDeathListener implements Listener
 
         if (gameState.equals(GameState.GAME))
         {
-            TeamManager teamManager = gameManager.getTeamManager();
             PlayerDataManager playerDataManager = gameManager.getPlayerDataManager();
             PlayerData playerDataKiller = playerDataManager.getPlayerData().get(killer);
+            TeamManager teamManager = gameManager.getTeamManager();
+            SpectatorManager spectatorManager = gameManager.getSpectatorManager();
             String message;
 
             event.setDroppedExp(0);
             event.getDrops().clear();
-
-            teamManager.getTeam().remove(victim);
-
-            Bukkit.getScheduler().runTask(Main.getPlugin(), () -> victim.spigot().respawn());
 
             if (killer != null && playerDataKiller != null)
             {
@@ -52,6 +50,14 @@ public class PlayerDeathListener implements Listener
             }
 
             event.setDeathMessage(message);
+
+            teamManager.getTeam().remove(victim);
+
+            Bukkit.getScheduler().runTask(Main.getPlugin(), () -> victim.spigot().respawn());
+
+            gameManager.checkWin();
+
+            spectatorManager.getSpectators().add(victim);
         }
     }
 }

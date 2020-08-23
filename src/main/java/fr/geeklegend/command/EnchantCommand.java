@@ -2,8 +2,8 @@ package fr.geeklegend.command;
 
 import fr.geeklegend.Main;
 import fr.geeklegend.game.EditItemManager;
-import fr.geeklegend.game.EditItemState;
 import fr.geeklegend.inventory.EditItemEnchantInventory;
+import fr.geeklegend.scheduler.StartScheduler;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,6 +29,8 @@ public class EnchantCommand implements CommandExecutor
                     {
                         if (!player.getItemInHand().getType().equals(Material.AIR))
                         {
+                            StartScheduler.setPaused(true);
+
                             player.openInventory(new EditItemEnchantInventory().create(player));
                         }
                     }

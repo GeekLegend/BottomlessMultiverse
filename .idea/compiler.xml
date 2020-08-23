@@ -10,5 +10,8 @@
         <module name="BottomlessMultiverse" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BottomlessMultiverse" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

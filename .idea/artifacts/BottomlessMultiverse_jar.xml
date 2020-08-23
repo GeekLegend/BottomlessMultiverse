@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="BottomlessMultiverse:jar">
-    <output-path>$USER_HOME$/Desktop/server/1.8.8/plugins</output-path>
+    <output-path>$USER_HOME$/Desktop/server/1.15.2/plugins</output-path>
     <root id="archive" name="BottomlessMultiverse.jar">
       <element id="module-output" name="BottomlessMultiverse" />
     </root>

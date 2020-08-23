@@ -41,19 +41,17 @@ public class ChestManager
                         {
                             ConfigManager configManager = Main.getPlugin().getConfigManager();
                             FileConfiguration defaultConfig = configManager.getDefaultConfig();
-
                             inventory.clear();
 
                             for (int i = 0; i < defaultConfig.getInt("game.chests.items"); i++)
                             {
                                 ItemStack randomItem = getRandomItem();
+                                Random random = new Random();
+                                int sizeLimit = inventory.getSize() - 1;
+                                int randomSlot = random.nextInt(sizeLimit);
 
                                 if (randomItem != null)
                                 {
-                                    Random random = new Random();
-                                    int sizeLimit = inventory.getSize() - 1;
-                                    int randomSlot = random.nextInt(sizeLimit);
-
                                     inventory.setItem(randomSlot, randomItem);
                                 }
                             }
@@ -67,15 +65,19 @@ public class ChestManager
     public ItemStack getRandomItem()
     {
         EditItemManager editItemManager = Main.getPlugin().getGameManager().getEditItemManager();
-        List<ItemStack> givenList = Lists.newArrayList(editItemManager.getItems());
-        int randomIndex = new Random().nextInt(givenList.size());
-        ItemStack randomItem = givenList.get(randomIndex);
 
-        givenList.remove(randomIndex);
-
-        if (randomItem != null)
+        if (!editItemManager.getItems().isEmpty())
         {
-            return randomItem;
+            List<ItemStack> givenList = Lists.newArrayList(editItemManager.getItems());
+            int randomIndex = new Random().nextInt(givenList.size());
+            ItemStack randomItem = givenList.get(randomIndex);
+
+            givenList.remove(randomIndex);
+
+            if (randomItem != null)
+            {
+                return randomItem;
+            }
         }
         return null;
     }

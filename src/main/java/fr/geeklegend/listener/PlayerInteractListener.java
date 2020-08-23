@@ -9,6 +9,7 @@ import fr.geeklegend.inventory.EditItemInventory;
 import fr.geeklegend.kit.KitEditInventory;
 import fr.geeklegend.kit.KitInventory;
 import fr.geeklegend.kit.KitManager;
+import fr.geeklegend.scheduler.StartScheduler;
 import fr.geeklegend.team.TeamInventory;
 import fr.geeklegend.util.BungeeChannelApi;
 import fr.geeklegend.util.Constant;
@@ -60,6 +61,8 @@ public class PlayerInteractListener implements Listener
                             player.sendMessage(cantEditMessage);
                         } else
                         {
+                            StartScheduler.setPaused(true);
+
                             player.openInventory(new KitEditInventory().create(player));
                         }
                     } else if (item.getType().equals(Material.valueOf(defaultConfig.getString("join.items.edititems.material").replace(" ", "_")
@@ -72,6 +75,8 @@ public class PlayerInteractListener implements Listener
                             player.sendMessage(cantEditMessage);
                         } else
                         {
+                            StartScheduler.setPaused(true);
+
                             player.openInventory(new EditItemInventory().create(player));
                         }
                     } else if (item.getType().equals(Material.valueOf(defaultConfig.getString("join.items.leave.material").replace(" ", "_")
